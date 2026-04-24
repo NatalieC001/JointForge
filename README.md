@@ -37,7 +37,7 @@ https://github.com/user-attachments/assets/1ef86217-f74e-4104-ab48-3fa862080085
 ---
 
 ## 🚀 Installation
-1.  **Download** `JointForge.py`.
+1.  **Download** `JointForge2.py`.
 2.  **In Blender:** Navigate to `Edit → Preferences → Add-ons → Install`.
 3.  **Enable:** Select the file and check the box to activate.
 4.  **Find it:** Open the **3D Viewport sidebar** (Press **N**) and look for the **JointForge** tab.
