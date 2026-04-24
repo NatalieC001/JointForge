@@ -72,12 +72,12 @@ https://github.com/user-attachments/assets/1ef86217-f74e-4104-ab48-3fa862080085
 
 ---
 
-## 🐛 Troubleshooting "Bad Trips"
-> **"Boolean operation failed"**
-> Your mesh might be "dirty." Check for non-manifold geometry: `Edit Mode → Select → All by Trait → Non Manifold`. Clean your stash before you split it!
+🐛 Troubleshooting "Bad Trips"
+"Boolean operation failed"
+Your mesh might be "dirty." Check for non-manifold geometry: Edit Mode → Select → All by Trait → Non Manifold. Clean your stash before you split it! No one likes a messy joint 😉. 
 
-> **"Parts are too tight"**
-> If your parts don't fit after printing, don't force it. Increase your **Fit Gap** by **0.1mm** and re-roll the generation.
+"Parts are too tight"
+If your parts don't fit after printing, don't force it—stay relaxed. Increase your Fit Gap by 0.1mm and re-roll the generation.
 
 ---
 
