@@ -1,0 +1,173 @@
+JointForge 🔧
+Precision Keyed Joints for 3D Printable Models
+https://img.shields.io/badge/version-1.0.0-blue.svg
+https://img.shields.io/badge/Blender-4.2%252B-orange.svg
+https://img.shields.io/badge/license-MIT-green.svg
+
+
+
+
+🎯 What is JointForge?
+JointForge is a Blender add-on that automatically creates precise keyed joints for splitting and reassembling 3D models. Perfect for:
+
+🖨️ Large 3D prints - split models that exceed your printer's build volume
+
+🔧 Multi-material prints - create assembly points for different materials
+
+🎨 Paint-friendly models - split complex models for easier painting
+
+📦 Storage optimization - create collapsible or modular designs
+
+✨ Features
+One-Click Operation - Select your mesh, choose a slicing plane, and generate matching joints instantly
+
+Adjustable Joints - Customize key size, depth, and fit tolerance
+
+Flexible Assignment - Choose which part gets the peg (additive) and which gets the notch (subtractive)
+
+Non-Destructive - Original mesh remains untouched; new parts are created in a dedicated collection
+
+Universal Application - Works with any mesh, not just organic shapes
+
+🚀 Installation
+Download JointForge.py
+
+In Blender: Edit → Preferences → Add-ons → Install
+
+Select the downloaded file and enable the add-on
+
+Find "JointForge" in the 3D Viewport sidebar (N key)
+
+📖 Usage
+Basic Workflow
+Prepare Your Model
+
+Ensure your mesh is manifold (watertight)
+
+Position your cutting plane where you want the split
+
+Configure the Add-on
+
+Key Size (mm) - Width of the square peg/hole
+
+Key Depth (mm) - How deep the joint penetrates
+
+Fit Gap (mm) - Clearance for easy assembly (0.2mm recommended for FDM printers)
+
+Peg Assignment - Choose which part gets the male/female joint
+
+Generate
+
+Click "Generate Joints"
+
+Two new objects are created in a [ModelName]_Parts collection
+
+Original mesh is hidden (kept as backup)
+
+Export for Printing
+
+Select each part and export separately as STL
+
+Print, assemble, and enjoy!
+
+🎮 Interface
+text
+┌─────────────────────────────────┐
+│ JointForge                      │
+├─────────────────────────────────┤
+│ Bird:        [Model Name     ▼] │
+│ Slicer Plane: [Plane Object   ▼] │
+├─────────────────────────────────┤
+│ Key Size (mm):   [  5.0  ]      │
+│ Key Depth (mm):  [  4.0  ]      │
+│ Fit Gap (mm):    [  0.2  ]      │
+├─────────────────────────────────┤
+│ Peg Assignment:                 │
+│ ○ Peg on TOP                    │
+│ ● Peg on BOTTOM                 │
+├─────────────────────────────────┤
+│    [ GENERATE JOINTS ]          │
+└─────────────────────────────────┘
+🔧 Technical Details
+Slicing Method: Bmesh bisect with face filling
+
+Boolean Solver: Exact (Blender 4.2+)
+
+Joint Geometry: Cube primitives scaled to specifications
+
+Gap Implementation: Hole scaled by (size + gap) / size factor
+
+📊 Recommended Settings by Printer Type
+Printer Type	Key Size	Key Depth	Gap	Notes
+FDM (0.4mm nozzle)	5.0mm	4.0mm	0.2mm	Standard fit
+FDM (0.6mm nozzle)	6.0mm	5.0mm	0.3mm	Looser tolerance
+Resin/SLA	4.0mm	3.0mm	0.1mm	Tight fit
+Large Format	10.0mm	8.0mm	0.4mm	Structural joints
+🏗️ Alternative Name Suggestions
+Name	Vibe	Why
+JointForge	Professional	Implies precision craftsmanship
+SliceKey	Functional	Describes exactly what it does
+KeyMaster	Fun	Nostalgic, memorable
+SplitJoints	Descriptive	Clear purpose
+AssembleEase	Brandable	Focuses on the benefit
+PrintSplit	Utility	Direct, no-nonsense
+ModularMake	Creative	For makers
+JointCraft	Artisan	Quality-focused
+KeyConnect	Modern	Assembly-focused
+PartitionPro	Technical	Professional tooling
+My recommendation: JointForge - It balances professionalism with approachability, implies precision, and works for any model type.
+
+🐛 Troubleshooting
+"No mesh selected"
+Make sure you've selected your target mesh and a plane object
+
+"Boolean operation failed"
+Your mesh may have non-manifold geometry
+
+Try: Edit Mode → Select → All by Trait → Non Manifold
+
+Fix issues or remesh before splitting
+
+"Cut faces not filling properly"
+Increase mesh density around the cut plane
+
+Use Blender's Remesh modifier for complex organic shapes
+
+"Parts don't fit after printing"
+Adjust the "Fit Gap" setting
+
+FDM printers typically need 0.2-0.3mm
+
+Resin printers can use 0.1mm or less
+
+📝 TODO
+Add circular/hexagonal key options
+
+Support multiple joints per split
+
+Add dovetail joint style
+
+Preview mode before generation
+
+Batch processing for multi-part splits
+
+Export directly to STL
+
+🤝 Contributing
+Pull requests welcome! Areas for contribution:
+
+Additional joint geometries
+
+Performance optimizations for high-poly meshes
+
+Localization/i18n
+
+Documentation and examples
+
+📄 License
+MIT License - Use freely in commercial and personal projects.
+
+🙏 Acknowledgments
+Built for the 3D printing community. Inspired by the need to print models that are just slightly too big for the build plate.
+
+Made with ❤️ for Blender and 3D Printing
