@@ -266,52 +266,73 @@ class JOINTFORGE_OT_GenerateJoints(bpy.types.Operator):
             # Hide cutter
             cutter.hide_set(True)
             
-            # Optionally add key to the INSIDE piece (the cut-out piece)
+            # Optionally add key based on peg assignment
             if add_key_to_shape:
-                # Find the top face of the inside piece (highest Z)
+                # 'BOTTOM' = key goes on INSIDE piece (the cutout)
+                # 'TOP' = key goes on OUTSIDE piece (the main body)
+                
+                if peg_part == 'BOTTOM':
+                    peg_piece = inside_obj
+                    hole_piece = outside_obj
+                    self.report({'INFO'}, "Adding key to INSIDE piece (cutout)")
+                else:
+                    peg_piece = outside_obj
+                    hole_piece = inside_obj
+                    self.report({'INFO'}, "Adding key to OUTSIDE piece (main body)")
+                
+                # Find the face on the peg piece that faces the other piece
                 bm = bmesh.new()
-                bm.from_mesh(inside_obj.data)
+                bm.from_mesh(peg_piece.data)
                 
                 # Transform vertices to world space
-                world_mat = inside_obj.matrix_world
+                world_mat = peg_piece.matrix_world
                 for vert in bm.verts:
                     vert.co = world_mat @ vert.co
                 
-                # Find face with highest average Z (top face)
-                highest_z = -999999
-                top_face_center = None
-                top_face_normal = None
+                # Find the interface face (closest to the other piece)
+                # Calculate the center of the other piece's bounding box for reference
+                other_world_mat = hole_piece.matrix_world
+                other_center = Vector((0, 0, 0))
+                for vert in hole_piece.data.vertices:
+                    other_center += other_world_mat @ vert.co
+                other_center /= len(hole_piece.data.vertices)
+                
+                # Find face with center closest to the other piece
+                min_distance = 999999
+                interface_face_center = None
+                interface_face_normal = None
                 
                 for face in bm.faces:
-                    center_z = sum(vert.co.z for vert in face.verts) / len(face.verts)
-                    if center_z > highest_z:
-                        highest_z = center_z
-                        center = Vector((0, 0, 0))
-                        for vert in face.verts:
-                            center += vert.co
-                        top_face_center = center / len(face.verts)
-                        top_face_normal = face.normal.copy()
+                    center = Vector((0, 0, 0))
+                    for vert in face.verts:
+                        center += vert.co
+                    center /= len(face.verts)
+                    distance = (center - other_center).length
+                    if distance < min_distance:
+                        min_distance = distance
+                        interface_face_center = center
+                        interface_face_normal = face.normal.copy()
                 
                 bm.free()
                 
-                if top_face_center and top_face_normal:
+                if interface_face_center and interface_face_normal:
                     # Calculate rotation to align Z axis with face normal
                     z_axis = Vector((0, 0, 1))
-                    if top_face_normal.length > 0 and z_axis != top_face_normal:
-                        q = z_axis.rotation_difference(top_face_normal)
+                    if interface_face_normal.length > 0 and z_axis != interface_face_normal:
+                        q = z_axis.rotation_difference(interface_face_normal)
                         key_rotation = q.to_euler()
                     else:
                         key_rotation = cutter.rotation_euler
                     
-                    # Create key at the top face center
-                    bpy.ops.mesh.primitive_cube_add(size=key_size, location=top_face_center, rotation=key_rotation)
+                    # Create key at the interface face center
+                    bpy.ops.mesh.primitive_cube_add(size=key_size, location=interface_face_center, rotation=key_rotation)
                     master_key = context.active_object
                     master_key.name = "TEMP_MASTER_KEY"
                     master_key.scale = (1, 1, key_depth / key_size if key_size > 0 else 1)
                     bpy.ops.object.transform_apply(location=False, rotation=False, scale=True)
                     
-                    # Position key half depth above the face
-                    master_key.location = top_face_center + (top_face_normal * (key_depth / 2))
+                    # Position key half depth extending into the piece
+                    master_key.location = interface_face_center + (interface_face_normal * (key_depth / 2))
                     
                     # Create peg
                     peg = master_key.copy()
@@ -320,15 +341,14 @@ class JOINTFORGE_OT_GenerateJoints(bpy.types.Operator):
                     peg.location = master_key.location
                     context.collection.objects.link(peg)
                     
-                    # Add peg to INSIDE piece (the cut-out piece)
-                    context.view_layer.objects.active = inside_obj
-                    mod_peg = inside_obj.modifiers.new(name="AddPeg", type='BOOLEAN')
+                    # Add peg to the peg piece
+                    context.view_layer.objects.active = peg_piece
+                    mod_peg = peg_piece.modifiers.new(name="AddPeg", type='BOOLEAN')
                     mod_peg.object = peg
                     mod_peg.operation = 'UNION'
                     mod_peg.solver = 'EXACT'
                     bpy.ops.object.modifier_apply(modifier=mod_peg.name)
                     
-                    # Also add matching hole to OUTSIDE piece
                     # Create hole cutter (scaled for gap)
                     hole_cutter = master_key.copy()
                     hole_cutter.data = master_key.data.copy()
@@ -341,8 +361,9 @@ class JOINTFORGE_OT_GenerateJoints(bpy.types.Operator):
                     bpy.ops.object.transform_apply(location=False, rotation=False, scale=True)
                     context.collection.objects.link(hole_cutter)
                     
-                    context.view_layer.objects.active = outside_obj
-                    mod_hole = outside_obj.modifiers.new(name="CarveHole", type='BOOLEAN')
+                    # Add matching hole to the other piece
+                    context.view_layer.objects.active = hole_piece
+                    mod_hole = hole_piece.modifiers.new(name="CarveHole", type='BOOLEAN')
                     mod_hole.object = hole_cutter
                     mod_hole.operation = 'DIFFERENCE'
                     mod_hole.solver = 'EXACT'
@@ -353,7 +374,7 @@ class JOINTFORGE_OT_GenerateJoints(bpy.types.Operator):
                     bpy.data.objects.remove(peg, do_unlink=True)
                     bpy.data.objects.remove(hole_cutter, do_unlink=True)
                 else:
-                    self.report({'WARNING'}, "Could not find top face for key placement")
+                    self.report({'WARNING'}, "Could not find interface face for key placement")
             
             # Hide original target
             target_mesh.hide_set(True)
@@ -378,7 +399,7 @@ class JOINTFORGE_OT_GenerateJoints(bpy.types.Operator):
             context.view_layer.objects.active = outside_obj
             
             if add_key_to_shape:
-                self.report({'INFO'}, f"Shape carved out with key added to inside piece! Tolerance: {gap_mm:.1f}mm")
+                self.report({'INFO'}, f"Shape carved out with key added! Tolerance: {gap_mm:.1f}mm")
             else:
                 self.report({'INFO'}, "Shape carved out successfully! Outside and inside pieces created.")
         
@@ -413,7 +434,7 @@ class JOINTFORGE_PT_Panel(bpy.types.Panel):
         box.label(text="3D SHAPE (cube, sphere, wedge, etc.)")
         box.label(text="  → Creates OUTSIDE (body with hole)")
         box.label(text="  → Creates INSIDE (cut-out piece)")
-        box.label(text="  → Optional key added to INSIDE piece")
+        box.label(text="  → Optional key added based on PEG setting")
         
         layout.separator()
         
@@ -433,6 +454,8 @@ class JOINTFORGE_PT_Panel(bpy.types.Panel):
         
         box = layout.box()
         box.label(text="PEG GOES ON:")
+        box.label(text="  BOTTOM = cutout piece (INSIDE)")
+        box.label(text="  TOP = main body (OUTSIDE)")
         box.prop(scene, "jointforge_peg_assignment", expand=True)
         
         layout.separator()
@@ -453,7 +476,7 @@ def register():
     bpy.types.Scene.jointforge_gap = bpy.props.FloatProperty(default=0.2, min=0.0)
     bpy.types.Scene.jointforge_add_key_to_shape = bpy.props.BoolProperty(default=False, name="Add key to shape cut")
     bpy.types.Scene.jointforge_peg_assignment = bpy.props.EnumProperty(
-        items=[('TOP', "Top Part", ""), ('BOTTOM', "Bottom Part", "")],
+        items=[('TOP', "Top Part (OUTSIDE)", ""), ('BOTTOM', "Bottom Part (INSIDE)", "")],
         default='BOTTOM'
     )
 
