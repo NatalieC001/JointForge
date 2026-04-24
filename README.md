@@ -82,10 +82,8 @@ If your parts don't fit after printing, don't force it—stay relaxed. Increase 
 ---
 
 ## 📝 Future Road Map
-* [ ] **New Shapes:** Circular and hexagonal key options.
+* [ ] **New Shapes:** Circular and hexagonal key options...ball joints hmmmm???.
 * [ ] **Dovetail Style:** For joints that lock without glue.
-* [ ] **Preview Mode:** See the joint placement before you commit.
-* [ ] **Batch Processing:** Split a giant model into a dozen pieces in one go.
 
 ---
 
