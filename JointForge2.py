@@ -2,7 +2,8 @@
 JointForge - Smart Cut with Auto Keys
 ======================================
 
-Author: Natalie C
+Author: Natalie C 
+2023
 Blender Version: 4.2.1 LTS
 
 Behavior:
