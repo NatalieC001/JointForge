@@ -46,6 +46,55 @@ Features:
 Compatibility:
     Tested on Blender 4.2.1 LTS
     Should work on Blender 4.0 and above
+
+-----------------------------------
+
+Complete Feature Set:
+For PLANE cutter:
+
+Bisect cut through entire model creating TOP and BOTTOM parts
+
+Fill the cut faces
+
+Create MALE peg on specified part (TOP or BOTTOM)
+
+Create FEMALE hole on the opposite part (with gap tolerance)
+
+Key anchored to plane center, aligned to plane normal
+
+For SHAPE cutter (sphere, cube, etc.):
+
+Boolean DIFFERENCE to carve a POCKET (female hole) into the model
+
+Find intersection boundary between model and cutter
+
+Create capping plane from that boundary to seal the pocket
+
+Create MALE peg on the pocket floor (on specified side)
+
+Create separate COUNTERPART part with matching FEMALE hole
+
+Key anchored to intersection center, aligned to boundary normal
+
+BOTH cases produce:
+
+A male part with a peg sticking OUT
+
+A female part with a matching hole (with adjustable gap tolerance)
+
+Hidden storage of original objects inside of OriginalParts Folder
+
+Proper key orientation and placement
+
+Here's the complete, working code:
+
+
+
+
+
+
+
+    
 """
 
 
