@@ -20,14 +20,14 @@ https://github.com/user-attachments/assets/1ef86217-f74e-4104-ab48-3fa862080085
 **JointForge** is a Blender add-on that lets you roll with the big models. It automatically creates precision keyed joints for splitting and reassembling 3D designs. Whether your model is too "large" for one hit or you’re looking for a cleaner multi-material trip, JointForge ensures everything fits together perfectly.
 
 ### Why JointForge?
-* **💨 Large 3D Prints:** Split models that exceed your printer's build volume.
-* **🌈 Multi-Material Hits:** Create clean assembly points for different filaments or resins.
-* **🎨 Paint-Friendly:** Break down complex models to get into every "nook and cranny."
-* **📦 Modular Stash:** Create collapsible or interlocking designs for better storage.
+* ** Large 3D Prints:** Split models that exceed your printer's build volume.
+* ** Multi-Material Hits:** Create clean assembly points for different filaments or resins.
+* ** Paint-Friendly:** Break down complex models to get into every "nook and cranny."
+* ** Modular Stash:** Create collapsible or interlocking designs for better storage.
 
 ---
 
-## ✨ Features
+##  Features
 * **One-Click Spark:** Select your mesh, choose a slicing plane, and generate matching joints instantly.
 * **Adjustable Strains:** Fully customize key size, depth, and fit tolerance for a smooth connection.
 * **Flexible Assignment:** Choose which part gets the peg (male) and which gets the notch (female).
@@ -36,7 +36,7 @@ https://github.com/user-attachments/assets/1ef86217-f74e-4104-ab48-3fa862080085
 
 ---
 
-## 🚀 Installation
+##  Installation
 1.  **Download** `JointForge2.py`.
 2.  **In Blender:** Navigate to `Edit → Preferences → Add-ons → Install`.
 3.  **Enable:** Select the file and check the box to activate.
@@ -44,7 +44,7 @@ https://github.com/user-attachments/assets/1ef86217-f74e-4104-ab48-3fa862080085
 
 ---
 
-## 📖 Basic Workflow
+##  Basic Workflow
 1.  **Prepare the Stash:** Ensure your mesh is manifold (watertight). Position a **Plane Object** exactly where you want the split.
 2.  **Pack the Settings:**
     * **Key Size (mm):** Width of the square peg/hole.
@@ -68,7 +68,7 @@ https://github.com/user-attachments/assets/1ef86217-f74e-4104-ab48-3fa862080085
 ## 🔧 Technical Details
 * **Slicing:** Uses the `Bmesh bisect` method with automatic face filling.
 * **Boolean Solver:** Utilizes the **Exact** solver (Blender 4.2+) for error-free unions.
-* **Gap Logic:** The female notch is mathematically scaled by a $(size + gap) / size$ factor to ensure a smooth slide-in every time.
+* **Gap Logic:** The female notch is mathematically scaled by a $(size + gap) / size$ factor.
 
 ---
 
