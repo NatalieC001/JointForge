@@ -1,5 +1,7 @@
 # JointForge 🔧
 ### Precision Keyed Joints for 3D Printable Models
+*Developed as part of the [Hummingbird in Paper](https://nataliec001.github.io/Hummingbird-in-Paper/) project.*
+
 [![version](https://img.shields.io/badge/version-1.0.0-blue.svg)](https://github.com/)
 [![Blender](https://img.shields.io/badge/Blender-4.2%2B-orange.svg)](https://www.blender.org/)
 [![license](https://img.shields.io/badge/license-MIT-green.svg)](https://opensource.org/licenses/MIT)
