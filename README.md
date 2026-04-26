@@ -1,17 +1,12 @@
 # JointForge 🔧
-### Precision Keyed Joints for 3D Printable Models
+Precision Keyed Joints for 3D Printable Models
+Copyright (c) 2024-2026 NatalieC. All Rights Reserved.
+
 *Developed as part of the [Hummingbird in Paper](https://nataliec001.github.io/Hummingbird-in-Paper/) project.*
 
 [![version](https://img.shields.io/badge/version-1.0.0-blue.svg)](https://github.com/)
 [![Blender](https://img.shields.io/badge/Blender-4.2%2B-orange.svg)](https://www.blender.org/)
-[![license](https://img.shields.io/badge/license-MIT-green.svg)](https://opensource.org/licenses/MIT)
-
-
-
-
-
-
-
+[![license](https://img.shields.io/badge/license-GPL--3.0-orange.svg)](https://www.gnu.org/licenses/gpl-3.0)
 
 https://github.com/user-attachments/assets/1ef86217-f74e-4104-ab48-3fa862080085
 
@@ -89,7 +84,7 @@ If your parts don't fit after printing, don't force it—stay relaxed. Increase 
 
 ---
 
-## 📄 License
-**MIT License** – Use it, mod it, share it. Just keep the good vibes going.
+[![license](https://img.shields.io/badge/license-GPL--3.0-orange.svg)](https://www.gnu.org/licenses/gpl-3.0)
+**GPL License** – Free to download and modify, but any shared versions must stay under this same license.
 
 *Made with ❤️ for the 3D Printing Community.*
